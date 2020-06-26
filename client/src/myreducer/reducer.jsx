@@ -20,6 +20,13 @@ const reducer = (state = iState, action) => {
                 mywishes: action.payload
             }
             break;
+        case "ADD_WISH":
+            return {
+                ...state,
+                //mywishes: action.payload // Replace New response
+                mywishes: [...state.mywishes, action.payload]// Append Response with Existing Data 
+            }
+            break;
 
         default:
             break;

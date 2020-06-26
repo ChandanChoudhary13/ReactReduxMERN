@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { handleInputAction, fetchWishAction } from "../myactions/action";
+import { handleInputAction, fetchWishAction, handleSubmitAction } from "../myactions/action";
 
 class Home extends React.Component {
   state = {
@@ -31,34 +31,14 @@ class Home extends React.Component {
     //   })
     this.props.fetchWish();
   }
-  handleSubmit(e) {
-    e.preventDefault();
-    // const url = "http://localhost:5000/sent";
-    var data = new URLSearchParams();
-    for (const pair of new FormData(e.target)) {
-      data.append(pair[0], pair[1])
-    }
-    //localhost:5000/sent
-    fetch('/sent', {
-      method: "post",
-      body: data,
 
-    }).then(res => res.json())
-      .then(res2 => {
-        console.log(res2)
-
-        this.setState({
-          mywishes: [...this.state.mywishes, res2]
-        })
-      });
-  }
   render() {
     const list = this.props.mywishes.map(item => {
       return <a className="collection-item" key={item._id} onClick={() => this.handledelete(item._id)}>{item.wish}</a>
     })
     return (
       <div>
-        <form onSubmit={(e) => this.handleSubmit(e)}>
+        <form onSubmit={(e) => this.props.handleSubmit(e)}>
           <input
             type="text"
             name="item"
@@ -87,7 +67,8 @@ const mapDispatchToProps = (dispatch) => {
 
   return {
     handleinput: (input) => { dispatch(handleInputAction(input)) },
-    fetchWish: () => { dispatch(fetchWishAction()) }
+    fetchWish: () => { dispatch(fetchWishAction()) },
+    handleSubmit: (e) => { dispatch(handleSubmitAction(e)) }
   }
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(Home);
