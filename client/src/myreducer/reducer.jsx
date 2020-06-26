@@ -7,12 +7,24 @@ const iState = {
 
 
 const reducer = (state = iState, action) => {
-    if (action.type === "UPDATE_INPUT") {
-        return {
-            ...state,
-            text: action.payload
-        }
+    switch (action.type) {
+        case "UPDATE_INPUT":
+            return {
+                ...state,
+                text: action.payload
+            }
+            break;
+        case "GET_WISH":
+            return {
+                ...state,
+                mywishes: action.payload
+            }
+            break;
+
+        default:
+            break;
     }
+
     return state;
 }
 export default reducer;

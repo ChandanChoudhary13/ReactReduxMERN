@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { handleInputAction } from "../myactions/action";
+import { handleInputAction, fetchWishAction } from "../myactions/action";
 
 class Home extends React.Component {
   state = {
@@ -21,14 +21,15 @@ class Home extends React.Component {
       })
   }
   componentDidMount() {
-    fetch('/data')
-      .then(res => res.json())
-      .then(res2 => {
-        console.log(res2)
-        this.setState({
-          mywishes: res2
-        })
-      })
+    // fetch('/data')
+    //   .then(res => res.json())
+    //   .then(res2 => {
+    //     console.log(res2)
+    //     this.setState({
+    //       mywishes: res2
+    //     })
+    //   })
+    this.props.fetchWish();
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -52,7 +53,7 @@ class Home extends React.Component {
       });
   }
   render() {
-    const list = this.state.mywishes.map(item => {
+    const list = this.props.mywishes.map(item => {
       return <a className="collection-item" key={item._id} onClick={() => this.handledelete(item._id)}>{item.wish}</a>
     })
     return (
@@ -78,13 +79,15 @@ class Home extends React.Component {
 
 const mapStoreToProps = (state) => {
   return {
-    text: state.text
+    text: state.text,
+    mywishes: state.mywishes
   }
 }
 const mapDispatchToProps = (dispatch) => {
 
   return {
-    handleinput: (input) => { dispatch(handleInputAction(input)) }
+    handleinput: (input) => { dispatch(handleInputAction(input)) },
+    fetchWish: () => { dispatch(fetchWishAction()) }
   }
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(Home);
