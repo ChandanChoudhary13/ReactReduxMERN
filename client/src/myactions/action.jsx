@@ -47,3 +47,20 @@ export const handleSubmitAction = (e) => {
             });
     }
 }
+
+export const handleDeleteAction = (id) => {
+    return (dispatch) => {
+        fetch('/remove/' + id, { method: "delete" })
+            .then(res => res.json())
+            .then(res2 => {
+                console.log(res2)
+                // const newWishes = state.mywishes.filter(item => {
+                //     return item._id !== res2._id
+                // })
+                // this.setState({
+                //     mywishes: newWishes
+                // })
+                dispatch({ type: "DELETE_WISH", payload: res2 })
+            })
+    }
+}

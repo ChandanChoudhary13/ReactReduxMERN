@@ -27,7 +27,15 @@ const reducer = (state = iState, action) => {
                 mywishes: [...state.mywishes, action.payload]// Append Response with Existing Data 
             }
             break;
-
+        case "DELETE_WISH":
+            const newWishes = state.mywishes.filter(item => {
+                return item._id !== action.payload._id
+            })
+            return {
+                ...state,
+                mywishes: newWishes
+            }
+            break;
         default:
             break;
     }

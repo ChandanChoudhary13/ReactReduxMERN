@@ -1,25 +1,9 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { handleInputAction, fetchWishAction, handleSubmitAction } from "../myactions/action";
+import { handleInputAction, fetchWishAction, handleSubmitAction, handleDeleteAction } from "../myactions/action";
 
 class Home extends React.Component {
-  state = {
-    text: '',
-    mywishes: [{ _id: 1, wish: "loading" }]
-  }
-  handledelete(id) {
-    fetch('/remove/' + id, { method: "delete" })
-      .then(res => res.json())
-      .then(res2 => {
-        console.log(res2)
-        const newWishes = this.state.mywishes.filter(item => {
-          return item._id !== res2._id
-        })
-        this.setState({
-          mywishes: newWishes
-        })
-      })
-  }
+
   componentDidMount() {
     // fetch('/data')
     //   .then(res => res.json())
@@ -34,7 +18,7 @@ class Home extends React.Component {
 
   render() {
     const list = this.props.mywishes.map(item => {
-      return <a className="collection-item" key={item._id} onClick={() => this.handledelete(item._id)}>{item.wish}</a>
+      return <a className="collection-item" key={item._id} onClick={() => this.props.handleDelete(item._id)}>{item.wish}</a>
     })
     return (
       <div>
@@ -68,7 +52,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     handleinput: (input) => { dispatch(handleInputAction(input)) },
     fetchWish: () => { dispatch(fetchWishAction()) },
-    handleSubmit: (e) => { dispatch(handleSubmitAction(e)) }
+    handleSubmit: (e) => { dispatch(handleSubmitAction(e)) },
+    handleDelete: (id) => { dispatch(handleDeleteAction(id)) }
   }
 }
 export default connect(mapStoreToProps, mapDispatchToProps)(Home);
